@@ -8,6 +8,7 @@ public class Player extends Sprite implements Commons {
 
     private final int START_Y = 280;
     private final int START_X = 270;
+  
 
     private final String playerImg = "src/images/player.png";
     private int width;
@@ -39,6 +40,9 @@ public class Player extends Sprite implements Commons {
         if (x >= BOARD_WIDTH - 2 * width) {
             x = BOARD_WIDTH - 2 * width;
         }
+        
+        
+        
     }
 
     public void keyPressed(KeyEvent e) {

@@ -5,10 +5,21 @@
  */
 package com.zetcode;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author paulina
  */
 public class Game {
+    private KeyManager keyManager=new KeyManager();
     
+    
+    /**
+     * accessing the keys the player presses/releases
+     * @return keyManager
+     */
+    public KeyManager getKeyManager() {
+        return keyManager;
+    }
 }

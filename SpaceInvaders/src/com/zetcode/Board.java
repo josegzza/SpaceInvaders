@@ -8,10 +8,13 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -31,7 +34,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private boolean ingame = true;
     private final String explImg = "src/images/explosion.png";
     private String message = "Game Over";
-
+    private Files file;
     private Thread animator;
 
     public Board() {
@@ -71,7 +74,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
         player = new Player();
         shot = new Shot();
-
+        file = new Files();
         if (animator == null || !ingame) {
 
             animator = new Thread(this);
@@ -372,6 +375,14 @@ public class Board extends JPanel implements Runnable, Commons {
                     if (!shot.isVisible()) {
                         shot = new Shot(x, y);
                     }
+                }
+            }
+            //Guardar archivo
+            if(key==KeyEvent.VK_G){
+                try {
+                    file.saveFile();
+                } catch (IOException ex) {
+                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

@@ -20,8 +20,8 @@ public class Assets {
     
     public static void init() {
         background = ImageLoader.loadImage("/images/background.jpg");
-        player = ImageLoader.loadImage("/images/player.jpg");
-        alien = ImageLoader.loadImage("/images/alien.jpg");
+        player = ImageLoader.loadImage("/images/bar.png");
+        alien = ImageLoader.loadImage("/images/breaker.png");
     } 
 }
 //Example
