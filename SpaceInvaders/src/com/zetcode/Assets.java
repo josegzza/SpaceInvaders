@@ -12,3 +12,4 @@ package com.zetcode;
 public class Assets {
     
 }
+//Example
