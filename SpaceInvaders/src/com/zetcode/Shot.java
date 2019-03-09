@@ -15,6 +15,13 @@ public class Shot extends Sprite {
 
         initShot(x, y);
     }
+    
+    public int getX(){
+        return x;
+    }
+    public int getY(){
+        return y;
+    }
 
     private void initShot(int x, int y) {
 

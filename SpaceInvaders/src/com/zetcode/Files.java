@@ -1,81 +1,84 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.zetcode;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author pepe_
+ * @author paulina and josé
  */
 public class Files {
-    String fileName="Demo.txt";
-    Player player;
-    public Files() {
+private Board game;
+    public Files(Board game){
+        this.game= game;
     }
     
-    public void readFile(){
-        File file;
-        try{
-            file=new File(fileName);
-            if(file.createNewFile()){
-                System.out.println("Se ha creado el archivo");
+    //Save game
+    public static void saveGame(Shot shot,Player player, ArrayList<Alien> aliens,int deaths){
+        
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileWriter("saveSI.txt")); // creates / open file
+            printWriter.println("" + player.getX()+","+player.getY()); // saves player on the txt
+            printWriter.println("" + shot.getX()+","+shot.getY()); // saves shot / ball
+            printWriter.println("" + (aliens.size()-(deaths))); // saves number of aliens on the txt
+            for(int i = 0; i < aliens.size()-deaths; i++) {
+                printWriter.println("" + aliens.get(i).getX() + "," + aliens.get(i).getY()+","+aliens.get(i).getBomb().getX()+","+aliens.get(i).getBomb().getY()); // saves aliens positions
             }
-        } catch(IOException e){
-            System.err.println("No se ha podido crear archivo");
+             //System.out.println("Correct write");
+            printWriter.close(); // close file
+        } catch (IOException ex) {
+            System.out.println("COULDN'T SAVE " + ex.toString());
         }
     }
     
-    //Save variables on a txt
-     public void saveFile() throws IOException {
-                                                          
-                PrintWriter fileOut = new PrintWriter(new FileWriter(fileName));
-                /*for (int i = 0; i < vec.size(); i++) {
-
-                    Puntaje x;
-                    x = (Puntaje) vec.get(i);
-                    fileOut.println(x.toString());
-                }*/
-                //fileOut.println("prueba01");
-                fileOut.println("1000");
-                System.out.println("Correct write");
-                fileOut.close();
-     }
-     public void loadFile(Player player) throws IOException {
-                                                          
-                BufferedReader fileIn;
-                try {
-                        fileIn = new BufferedReader(new FileReader(fileName));
-                } catch (FileNotFoundException e){
-                        //File puntos = new File(fileName);
-                        //PrintWriter fileOut = new PrintWriter(puntos);
-                        //fileOut.println("100,demo");
-                        //fileOut.close();
-                        fileIn = new BufferedReader(new FileReader(fileName));
-                }
-                String dato = fileIn.readLine();
+    /*
+       public static void loadGame(Board game){
+           FileReader fr = null;
+           BufferedReader br = null;
+           String line;
+        try {
+            // loads file where every value of the game was saved
+            fr=new FileReader("saveSI.txt"); //Open file
+            br = new BufferedReader(fr);
+            line = br.readLine(); //Read line by line
+            String[] elements = line.split(","); //Split elements with "," and save it in an array
+            //Read every value in the file so it can be loaded
+            //game.setScore(Integer.parseInt(br.readLine()));
+            game.getPlayerBar().setX(Integer.parseInt(elements[0])); //load position bar //Player position X
+            game.getPlayerBar().setY(Integer.parseInt(elements[1])); //load position bar //Player position y
+            
+            // to read breaker status
+            line = br.readLine();
+            elements = line.split(",");
+            game.getBreaker().setX(Integer.parseInt(elements[0])); //load position of breaker //shot position X
+            game.getBreaker().setY(Integer.parseInt(elements[1])); //load position of breaker //shot position Y
                 
-                while(dato != null) {  
-                                                        
-                      /*arr = dato.split(",");
-                      int num = (Integer.parseInt(arr[0]));
-                      String nom = arr[1];
-                      vec.add(new Puntaje(nom,num));*/
-                      int num = Integer.parseInt(dato);
-                      System.out.println(dato);
-                      player.setX(num);
-                      dato = fileIn.readLine();
-                }
-                fileIn.close();
-        }
+            // read bricks status
+            line = br.readLine();
+            
+            int contBricks = Integer.parseInt(line); //Save the size of bricks
+            game.getBricks().clear(); //metodo para borrar todo los aliens
+            for(int i = 0; i < contBricks; i++) { //Check brick by brick
+                line = br.readLine();
+                elements = line.split(","); //Save positions
+                int x = Integer.parseInt(elements[0]); //load positions
+                int y = Integer.parseInt(elements[1]); //load positions
+                Brick brick = new Brick(x, y, game); //create bricks with the saved positions
+                game.getBricks().add(brick); //add linkedlist
+            }
+            
+            //System.out.println("Correct load");
 
+        } catch (IOException ex) {
+            Logger.getLogger(Files.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+*/
 }

@@ -25,8 +25,8 @@ public class Board extends JPanel implements Runnable, Commons {
     private Dimension d;
     private ArrayList<Alien> aliens;
     private Player player;
-    private Shot shot;
-
+    public Shot shot;
+    public int aliensCount;
     private final int ALIEN_INIT_X = 150;
     private final int ALIEN_INIT_Y = 5;
     private int direction = -1;
@@ -37,12 +37,14 @@ public class Board extends JPanel implements Runnable, Commons {
     private String message = "Game Over";
     private Files file;
     private Thread animator;
-
+    
+    
     public Board() {
 
         initBoard();
     }
     
+   
     public boolean isPause(){
         return pause;
     }
@@ -80,10 +82,10 @@ public class Board extends JPanel implements Runnable, Commons {
                 aliens.add(alien);
             }
         }
-
+        aliensCount=aliens.size();
         player = new Player();
         shot = new Shot();
-        file = new Files();
+        file = new Files(this);
         if (animator == null || !ingame) {
 
             animator = new Thread(this);
@@ -360,6 +362,10 @@ public class Board extends JPanel implements Runnable, Commons {
         gameOver();
     }
 
+    boolean getP() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private class TAdapter extends KeyAdapter {
 
         @Override
@@ -373,7 +379,8 @@ public class Board extends JPanel implements Runnable, Commons {
             }
             
         }
-
+        
+        
         @Override
         public void keyPressed(KeyEvent e) {
 
@@ -395,11 +402,7 @@ public class Board extends JPanel implements Runnable, Commons {
             
             //Guardar archivo
             if(key==KeyEvent.VK_G){
-                try {
-                    file.saveFile();
-                } catch (IOException ex) {
-                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                Files.saveGame(shot,player,aliens,deaths);
             }
             
         }
