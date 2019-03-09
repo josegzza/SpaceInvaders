@@ -8,7 +8,7 @@ public class Player extends Sprite implements Commons {
 
     private final int START_Y = 280;
     private final int START_X = 270;
-  
+    private boolean pause;
 
     private final String playerImg = "src/images/player.png";
     private int width;
@@ -17,7 +17,11 @@ public class Player extends Sprite implements Commons {
 
         initPlayer();
     }
-
+    
+    public void setPause(boolean pause){
+        this.pause=pause;
+    }
+    
     private void initPlayer() {
         
         ImageIcon ii = new ImageIcon(playerImg);
@@ -41,22 +45,20 @@ public class Player extends Sprite implements Commons {
             x = BOARD_WIDTH - 2 * width;
         }
         
-        
-        
+       
     }
 
     public void keyPressed(KeyEvent e) {
-        
+        if(!pause){
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-        
             dx = -2;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-        
             dx = 2;
+        }
         }
     }
 
@@ -65,7 +67,6 @@ public class Player extends Sprite implements Commons {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-        
             dx = 0;
         }
 

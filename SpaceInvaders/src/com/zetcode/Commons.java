@@ -16,4 +16,6 @@ public interface Commons {
     public static final int DELAY = 17;                     
     public static final int PLAYER_WIDTH = 15;                  // Player CLASS
     public static final int PLAYER_HEIGHT = 10;                 // Player CLASS
+    
+    
 }

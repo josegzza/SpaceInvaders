@@ -5,13 +5,13 @@ import javax.swing.ImageIcon;
 public class Alien extends Sprite {
 
     private Bomb bomb;
-    private final String alienImg = "src/images/meth.png";
+    private final String alienImg = "src/images/alien.png";
 
     public Alien(int x, int y) {
 
         initAlien(x, y);
     }
-
+    
     private void initAlien(int x, int y) {
 
         this.x = x;

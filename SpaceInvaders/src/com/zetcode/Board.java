@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private final int ALIEN_INIT_Y = 5;
     private int direction = -1;
     private int deaths = 0;
-
+    private boolean pause=false; //Checar si el juego está pausado.
     private boolean ingame = true;
     private final String explImg = "src/images/explosion.png";
     private String message = "Game Over";
@@ -41,7 +42,15 @@ public class Board extends JPanel implements Runnable, Commons {
 
         initBoard();
     }
-
+    
+    public boolean isPause(){
+        return pause;
+    }
+    
+    //Cambiar status de pause;
+    public void setPause(){
+        pause = !pause;
+    }
     private void initBoard() {
 
         addKeyListener(new TAdapter());
@@ -94,7 +103,6 @@ public class Board extends JPanel implements Runnable, Commons {
             }
 
             if (alien.isDying()) {
-
                 alien.die();
             }
         }
@@ -187,7 +195,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
         // player
         player.act();
-
+        if(!pause){
         // shot
         if (shot.isVisible()) {
 
@@ -319,6 +327,7 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
     }
+    }
 
     @Override
     public void run() {
@@ -355,8 +364,14 @@ public class Board extends JPanel implements Runnable, Commons {
 
         @Override
         public void keyReleased(KeyEvent e) {
-
+            
+            int key=e.getKeyCode();
             player.keyReleased(e);
+            if(key == KeyEvent.VK_P){
+                setPause();
+                player.setPause(isPause());
+            }
+            
         }
 
         @Override
@@ -369,7 +384,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_SPACE) {
+            if (key == KeyEvent.VK_SPACE&&!pause) {
                 
                 if (ingame) {
                     if (!shot.isVisible()) {
@@ -377,6 +392,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     }
                 }
             }
+            
             //Guardar archivo
             if(key==KeyEvent.VK_G){
                 try {
@@ -385,6 +401,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            
         }
     }
 }
