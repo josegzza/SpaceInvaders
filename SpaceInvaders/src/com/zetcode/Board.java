@@ -35,8 +35,12 @@ public class Board extends JPanel implements Runnable, Commons {
     private boolean ingame = true;
     private final String explImg = "src/images/explosion.png";
     private String message = "Game Over";
+    private String newGame = "Press ENTER to start a new game";
     private Files file;
     private Thread animator;
+    
+    private boolean ov;
+    private int score = 0;
     
     
     public Board() {
@@ -53,6 +57,16 @@ public class Board extends JPanel implements Runnable, Commons {
     public void setPause(){
         pause = !pause;
     }
+    
+    public int getScore() {
+        return score;
+    }
+       
+    public void setScore(int score) {
+        this.score = score;
+        System.out.println(getScore());
+    }
+    
     private void initBoard() {
 
         addKeyListener(new TAdapter());
@@ -135,7 +149,7 @@ public class Board extends JPanel implements Runnable, Commons {
             g.drawImage(shot.getImage(), shot.getX(), shot.getY(), this);
         }
     }
-
+        
     public void drawBombing(Graphics g) {
 
         for (Alien a : aliens) {
@@ -164,6 +178,8 @@ public class Board extends JPanel implements Runnable, Commons {
             drawPlayer(g);
             drawShot(g);
             drawBombing(g);
+            g.setColor(Color.white);
+            g.drawString("SCORE " + deaths * 100, 20, 20);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -171,7 +187,7 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void gameOver() {
-
+        
         Graphics g = this.getGraphics();
 
         g.setColor(Color.black);
@@ -189,6 +205,8 @@ public class Board extends JPanel implements Runnable, Commons {
         g.setFont(small);
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
                 BOARD_WIDTH / 2);
+        g.drawString(newGame, (BOARD_WIDTH - metr.stringWidth(newGame)) / 2,
+                BOARD_WIDTH / 3);
     }
 
     public void animationCycle() {
@@ -362,10 +380,15 @@ public class Board extends JPanel implements Runnable, Commons {
             
             beforeTime = System.currentTimeMillis();
         }
-
+        
         gameOver();
+        /*
+        do {
+            gameOver();
+        } while(!ntr);
+        */
     }
-
+   
     boolean getP() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -411,6 +434,10 @@ public class Board extends JPanel implements Runnable, Commons {
             //Load archivo
             if(key==KeyEvent.VK_C){
                 Files.loadGame(shot,player,aliens,deaths);
+            }
+            
+            if(key == KeyEvent.VK_ENTER) {
+                gameInit();
             }
             
         }
