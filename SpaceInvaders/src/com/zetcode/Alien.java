@@ -12,12 +12,31 @@ public class Alien extends Sprite {
         initAlien(x, y);
     }
     
+    public Alien(int x, int y,int bombx,int bomby){
+        initAlien(x,y,bombx,bomby);
+    }
+    public void setX(int x){
+        this.x=x;
+    }
+    public void setY(int y){
+        this.y=y;
+    }
     private void initAlien(int x, int y) {
 
         this.x = x;
         this.y = y;
 
         bomb = new Bomb(x, y);
+        ImageIcon ii = new ImageIcon(alienImg);
+        setImage(ii.getImage());
+    }
+    
+    private void initAlien(int x, int y,int bombx,int bomby) {
+
+        this.x = x;
+        this.y = y;
+
+        bomb = new Bomb(bombx, bomby);
         ImageIcon ii = new ImageIcon(alienImg);
         setImage(ii.getImage());
     }
@@ -51,7 +70,13 @@ public class Alien extends Sprite {
             setImage(ii.getImage());
 
         }
-
+        public void setX(int x){
+            this.x=x;
+        }
+        
+        public void setY(int y){
+            this.y=y;
+        }
         public void setDestroyed(boolean destroyed) {
         
             this.destroyed = destroyed;

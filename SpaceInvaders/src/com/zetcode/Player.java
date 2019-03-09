@@ -32,7 +32,15 @@ public class Player extends Sprite implements Commons {
         setX(START_X);
         setY(START_Y);
     }
-
+    
+    public void setX(int x){
+        this.x=x;
+    }
+    
+    public void setY(int y){
+        this.y=y;
+    }
+    
     public void act() {
         
         x += dx;

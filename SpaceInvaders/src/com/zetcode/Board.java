@@ -63,7 +63,11 @@ public class Board extends JPanel implements Runnable, Commons {
         gameInit();
         setDoubleBuffered(true);
     }
-
+    
+    public void setDeaths(int deaths){
+        this.deaths=deaths;
+    }
+    
     @Override
     public void addNotify() {
 
@@ -403,6 +407,10 @@ public class Board extends JPanel implements Runnable, Commons {
             //Guardar archivo
             if(key==KeyEvent.VK_G){
                 Files.saveGame(shot,player,aliens,deaths);
+            }
+            //Load archivo
+            if(key==KeyEvent.VK_C){
+                Files.loadGame(shot,player,aliens,deaths);
             }
             
         }

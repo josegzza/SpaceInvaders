@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,8 +27,8 @@ private Board game;
             PrintWriter printWriter = new PrintWriter(new FileWriter("saveSI.txt")); // creates / open file
             printWriter.println("" + player.getX()+","+player.getY()); // saves player on the txt
             printWriter.println("" + shot.getX()+","+shot.getY()); // saves shot / ball
-            printWriter.println("" + (aliens.size()-(deaths))); // saves number of aliens on the txt
-            for(int i = 0; i < aliens.size()-deaths; i++) {
+            printWriter.println("" + (aliens.size())); // saves number of aliens on the txt
+            for(int i = 0; i < aliens.size(); i++) {
                 printWriter.println("" + aliens.get(i).getX() + "," + aliens.get(i).getY()+","+aliens.get(i).getBomb().getX()+","+aliens.get(i).getBomb().getY()); // saves aliens positions
             }
              //System.out.println("Correct write");
@@ -36,9 +37,10 @@ private Board game;
             System.out.println("COULDN'T SAVE " + ex.toString());
         }
     }
-    
-    /*
-       public static void loadGame(Board game){
+   
+       public static void loadGame(Shot shot,Player player, ArrayList<Alien> aliens,int deaths){
+           
+           
            FileReader fr = null;
            BufferedReader br = null;
            String line;
@@ -50,35 +52,31 @@ private Board game;
             String[] elements = line.split(","); //Split elements with "," and save it in an array
             //Read every value in the file so it can be loaded
             //game.setScore(Integer.parseInt(br.readLine()));
-            game.getPlayerBar().setX(Integer.parseInt(elements[0])); //load position bar //Player position X
-            game.getPlayerBar().setY(Integer.parseInt(elements[1])); //load position bar //Player position y
-            
-            // to read breaker status
-            line = br.readLine();
+            player.setX(Integer.parseInt(elements[0]));//load player position x
+            player.setY(Integer.parseInt(elements[1]));//load player position y
+            line = br.readLine(); //Jump line
             elements = line.split(",");
-            game.getBreaker().setX(Integer.parseInt(elements[0])); //load position of breaker //shot position X
-            game.getBreaker().setY(Integer.parseInt(elements[1])); //load position of breaker //shot position Y
-                
-            // read bricks status
-            line = br.readLine();
-            
-            int contBricks = Integer.parseInt(line); //Save the size of bricks
-            game.getBricks().clear(); //metodo para borrar todo los aliens
-            for(int i = 0; i < contBricks; i++) { //Check brick by brick
+            shot.setVisible(true); //set visible shot
+            shot.setX(Integer.parseInt(elements[0])); //shot position X
+            shot.setY(Integer.parseInt(elements[1])); //shot position Y
+            line = br.readLine(); //jump line
+            int alienscounts=Integer.parseInt(line);
+            aliens.clear(); //metodo para borrar todo los aliens
+            for(int i = 0; i < alienscounts; i++) { //Check brick by brick
                 line = br.readLine();
                 elements = line.split(","); //Save positions
-                int x = Integer.parseInt(elements[0]); //load positions
-                int y = Integer.parseInt(elements[1]); //load positions
-                Brick brick = new Brick(x, y, game); //create bricks with the saved positions
-                game.getBricks().add(brick); //add linkedlist
+                int alienX = Integer.parseInt(elements[0]); //load positions
+                int alienY = Integer.parseInt(elements[1]); //load positions
+                int bombX =Integer.parseInt(elements[2]); //load bomb
+                int bombY=Integer.parseInt(elements[3]); //load bomb
+                Alien alien = new Alien(alienX,alienY,bombX,bombY);
+                aliens.add(alien); //add linkedlist
             }
-            
             //System.out.println("Correct load");
-
+            
         } catch (IOException ex) {
             Logger.getLogger(Files.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
-*/
+
 }
