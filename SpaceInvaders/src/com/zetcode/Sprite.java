@@ -10,7 +10,7 @@ public class Sprite {
     protected int y;
     protected boolean dying;
     protected int dx;
-
+    
     public Sprite() {
     
         visible = true;

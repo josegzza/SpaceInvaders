@@ -8,10 +8,14 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -21,24 +25,34 @@ public class Board extends JPanel implements Runnable, Commons {
     private Dimension d;
     private ArrayList<Alien> aliens;
     private Player player;
-    private Shot shot;
-
+    public Shot shot;
+    public int aliensCount;
     private final int ALIEN_INIT_X = 150;
     private final int ALIEN_INIT_Y = 5;
     private int direction = -1;
     private int deaths = 0;
-
+    private boolean pause=false; //Checar si el juego está pausado.
     private boolean ingame = true;
     private final String explImg = "src/images/explosion.png";
     private String message = "Game Over";
-
+    private Files file;
     private Thread animator;
-
+    
+    
     public Board() {
 
         initBoard();
     }
-
+    
+   
+    public boolean isPause(){
+        return pause;
+    }
+    
+    //Cambiar status de pause;
+    public void setPause(){
+        pause = !pause;
+    }
     private void initBoard() {
 
         addKeyListener(new TAdapter());
@@ -49,7 +63,11 @@ public class Board extends JPanel implements Runnable, Commons {
         gameInit();
         setDoubleBuffered(true);
     }
-
+    
+    public void setDeaths(int deaths){
+        this.deaths=deaths;
+    }
+    
     @Override
     public void addNotify() {
 
@@ -68,10 +86,10 @@ public class Board extends JPanel implements Runnable, Commons {
                 aliens.add(alien);
             }
         }
-
+        aliensCount=aliens.size();
         player = new Player();
         shot = new Shot();
-
+        file = new Files(this);
         if (animator == null || !ingame) {
 
             animator = new Thread(this);
@@ -91,7 +109,6 @@ public class Board extends JPanel implements Runnable, Commons {
             }
 
             if (alien.isDying()) {
-
                 alien.die();
             }
         }
@@ -184,7 +201,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
         // player
         player.act();
-
+        if(!pause){
         // shot
         if (shot.isVisible()) {
 
@@ -316,6 +333,7 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
     }
+    }
 
     @Override
     public void run() {
@@ -348,14 +366,25 @@ public class Board extends JPanel implements Runnable, Commons {
         gameOver();
     }
 
+    boolean getP() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private class TAdapter extends KeyAdapter {
 
         @Override
         public void keyReleased(KeyEvent e) {
-
+            
+            int key=e.getKeyCode();
             player.keyReleased(e);
+            if(key == KeyEvent.VK_P){
+                setPause();
+                player.setPause(isPause());
+            }
+            
         }
-
+        
+        
         @Override
         public void keyPressed(KeyEvent e) {
 
@@ -366,7 +395,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_SPACE) {
+            if (key == KeyEvent.VK_SPACE&&!pause) {
                 
                 if (ingame) {
                     if (!shot.isVisible()) {
@@ -374,6 +403,16 @@ public class Board extends JPanel implements Runnable, Commons {
                     }
                 }
             }
+            
+            //Guardar archivo
+            if(key==KeyEvent.VK_G){
+                Files.saveGame(shot,player,aliens,deaths);
+            }
+            //Load archivo
+            if(key==KeyEvent.VK_C){
+                Files.loadGame(shot,player,aliens,deaths);
+            }
+            
         }
     }
 }
